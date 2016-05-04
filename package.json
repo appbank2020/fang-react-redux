@@ -70,6 +70,7 @@
     "react-interpolate-component": "^0.8.0",
     "react-paginate": "^0.5.4",
     "react-router": "^2.0.1",
+    "react-router-redux": "^4.0.4",
     "react-select": "^1.0.0-beta12",
     "react-slider": "^0.6.1",
     "react-translate-component": "^0.10.0",
