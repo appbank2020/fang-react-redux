@@ -68,7 +68,8 @@ const mapDispatchToProps = (dispatch) => {
             }
         },
         onSuggestionsUpdateRequested({ value }) {
-            dispatch(getSuburbsFromServer(value)).payload
+            dispatch(getSuburbsFromServer(value))
+                .payload
                 .then((response) => {
                     if (response.status == 200) {
                         console.log(response);
