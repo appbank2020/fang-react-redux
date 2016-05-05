@@ -1,8 +1,4 @@
 import React, {Component, PropTypes} from 'react'
-import { addProperty } from '../actions/property'
-import { getSuburbs } from '../actions/suburb'
-import { reduxForm } from 'redux-form'
-import { browserHistory } from 'react-router'
 import Navbar from './Navbar'
 import Select from 'react-select'
 import AutoSuggest from 'react-autosuggest'
@@ -30,77 +26,7 @@ const ImagePreviewStyles = {
   margin: '2px',
 }
 
-//Client side validation
-function validate(values) {
-  const errors = {};
-
-  if (!values.price || values.price.trim() === '') {
-    errors.price = 'Enter a price.';
-  }
-  if (!values.address || values.address.trim() === '') {
-    errors.address = 'Enter an address.';
-  }
-  if (!values.propertyType || values.propertyType.trim() === '')
-  {
-    errors.propertyType = 'Select a property type.'
-  }
-  if (!values.roomType || values.roomType.trim() === '')
-  {
-    errors.roomType = 'Select a room type.'
-  }
-  if (!values.contactName || values.contactName.trim() === '') {
-    errors.contactName = 'Enter a contact name.';
-  }
-  if ((!values.contactNumber || values.contactNumber.trim() === '') &&
-      (!values.contactEmail || values.contactEmail.trim() === '') &&
-      (!values.contactSocial || values.contactSocial.trim() === ''))
-  {
-    errors.contactNumber = 'Enter a contact number.';
-    errors.contactEmail = 'Enter a contact mail.';
-    errors.contactSocial = 'Contact information is required at least one.';
-  }
-
-  return errors;
-}
-
-const validateAndAddProperty = (values, dispatch) => {
-  console.log(values);
-  return new Promise((resolve, reject) => {
-    dispatch(addProperty(values))
-        .then((response) => {
-          let data = response.payload.data;
-          if (response.payload.status != 200) {
-            reject(data);
-          } else {
-            browserHistory.push({
-              pathname: `/property/${response.payload.id}`
-            })
-            resolve();
-          }
-        })
-  })
-}
-
-const getSuggestions = (values) => {
-    console.log(values, getSuburbs(values.value));
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addProperty: validateAndAddProperty,
-    getSuburbSuggestions: getSuggestions
-  }
-}
-
-function mapStateToProps(state, ownProps) {
-  console.log(state);
-  return {
-    property: state.property,
-    suburbs: state.suburb
-  }
-}
-
-class AddProperty extends Component {
+export default class AddProperty extends Component {
 
   static contextTypes = {
     router: PropTypes.object
@@ -114,22 +40,6 @@ class AddProperty extends Component {
     if(nextProps.property.property && !nextProps.property.error) {
       this.context.router.push('/');
     }
-  }
-
-  onSuburbSearchChange(event, object) {
-    console.log(object);
-  }
-
-  onSuggestionsUpdateRequested(object) {
-    console.log(this.props);
-  }
-
-  onSuggestionSelected(event, object) {
-
-  }
-
-  getSuggestionValue(suggestion) {
-    return suggestion.value;
   }
 
   renderError(property) {
@@ -150,12 +60,14 @@ class AddProperty extends Component {
     )
   }
 
+  getSuggestionValue(suggestion) {
+    return suggestion.value;
+  }
+
   render() {
-    const {fields: { price, bond, availableStart, minTerm, suburb, address, title, details, propertyType, roomType, propertyFeature, files, contactName, contactNumber, contactEmail, contactSocial }, handleSubmit, submitting, dispatch, property, suburbs} = this.props;
+    const {fields: { price, bond, availableStart, minTerm, address, title, details, propertyType, roomType, propertyFeature, files, contactName, contactNumber, contactEmail, contactSocial }, handleSubmit, submitting, property, onChange, onSuggestionsUpdateRequested} = this.props;
 
     console.log(this.props);
-
-    const suggestions = []
 
     const theme = {
       input: 'form-control',
@@ -164,12 +76,11 @@ class AddProperty extends Component {
     }
     const inputProps = {
       placeholder: counterpart('nav.search.placeholder'),
-      value: this.props.values.suburb,
-      onChange: this.onSuburbSearchChange.bind(this),
+      value: property.suggestions.value,
+      onChange,
       type: 'search'
     }
-
-
+    
     const bondOptions = [
       { value: '0', label: 'No bond required' },
       { value: '2', label: '2 weeks bond' },
@@ -268,13 +179,11 @@ class AddProperty extends Component {
                   <div className="col-sm-9">
                     <AutoSuggest
                       theme={theme}
-                      suggestions={suggestions}
-                      onSuggestionsUpdateRequested={getSuggestions}
-                      onSuggestionSelected={this.onSuggestionSelected.bind(this)}
-                      getSuggestionValue={this.getSuggestionValue.bind(this)}
-                      renderSuggestion={this.renderSuggestion.bind(this)}
+                      suggestions={property.suggestions.suburbs}
+                      onSuggestionsUpdateRequested={onSuggestionsUpdateRequested}
+                      getSuggestionValue={this.getSuggestionValue}
+                      renderSuggestion={this.renderSuggestion}
                       inputProps={inputProps}
-                      {...suburb}
                       />
                   </div>
                 </div>
@@ -404,8 +313,3 @@ class AddProperty extends Component {
   }
 }
 
-export default reduxForm({
-  form: 'AddPropertyForm',
-  fields: ['price', 'bond', 'availableStart', 'minTerm', 'suburb', 'address', 'title', 'details', 'propertyType', 'roomType', 'propertyFeature', 'files', 'contactName', 'contactNumber', 'contactEmail', 'contactSocial'],
-  validate,
-}, mapStateToProps, mapDispatchToProps)(AddProperty);
