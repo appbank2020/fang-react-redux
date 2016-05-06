@@ -38,7 +38,7 @@ export default function (state = initialState, action = {}) {
         case UPDATE_SUBURB_SUGGESTIONS:
             return {...state, suggestions: {suburbs: action.suggestions, value: action.value}};
         case UPDATE_SUBURB_SUGGESTION_INPUT_VALUE:
-            return {...state, suggestions: {value: action.value}};
+            return {...state, suggestions: {...state.suggestions, value: action.value}};
         case CLEAR_SUBURB_SUGGESTIONS:
             return {...state, suggestions: {suburbs: [], value: ''}};
         default:
