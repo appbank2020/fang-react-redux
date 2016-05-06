@@ -3,6 +3,7 @@ import { getSuburbSuggestions, getSuburbsFromServer, updateSuggestions, updateSu
 import { reduxForm } from 'redux-form'
 import { browserHistory } from 'react-router'
 import AddProperty from '../components/AddProperty'
+import moment from 'moment'
 
 //Client side validation
 function validate(values) {
@@ -39,20 +40,15 @@ function validate(values) {
 
 const validateAndAddProperty = (values, dispatch) => {
     console.log(values);
-    return new Promise((resolve, reject) => {
-        dispatch(addProperty(values))
-            .then((response) => {
-                let data = response.payload.data;
-                if (response.payload.status != 200) {
-                    reject(data);
-                } else {
-                    browserHistory.push({
-                        pathname: `/property/${response.payload.id}`
-                    })
-                    resolve();
-                }
-            })
-    })
+    dispatch(addProperty(values))
+        .payload
+        .end((err, res) => {
+            if (!err) {
+                browserHistory.push({
+                    pathname: `/property/${res.body.id}`
+                })
+            }
+        })
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -70,10 +66,9 @@ const mapDispatchToProps = (dispatch) => {
         onSuggestionsUpdateRequested({ value }) {
             dispatch(getSuburbsFromServer(value))
                 .payload
-                .then((response) => {
-                    if (response.status == 200) {
-                        console.log(response);
-                        dispatch(updateSuggestions(response.data, value));
+                .end((err, res) => {
+                    if (!err) {
+                        dispatch(updateSuggestions(res.body, value));
                     }
                 });
         }
@@ -81,13 +76,16 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state) {
+    console.log(state);
+    
     return {
-        property: state.property
+        property: state.property,
+        initialValues: state.property
     };
 }
 
 export default reduxForm({
     form: 'AddPropertyForm',
-    fields: ['price', 'bond', 'availableStart', 'minTerm', 'address', 'title', 'details', 'propertyType', 'roomType', 'propertyFeature', 'files', 'contactName', 'contactNumber', 'contactEmail', 'contactSocial'],
-    validate,
+    fields: ['price', 'bond', 'availableStart', 'minTerm', 'suburb', 'postcode', 'address', 'title', 'details', 'propertyType', 'roomType', 'propertyFeature', 'files', 'imageCount', 'contactName', 'contactNumber', 'contactEmail', 'contactSocial', 'preferredContact'],
+    validate
 }, mapStateToProps, mapDispatchToProps)(AddProperty);

@@ -65,7 +65,7 @@ export default class AddProperty extends Component {
   }
 
   render() {
-    const {fields: { price, bond, availableStart, minTerm, address, title, details, propertyType, roomType, propertyFeature, files, contactName, contactNumber, contactEmail, contactSocial }, handleSubmit, submitting, property, onChange, onSuggestionsUpdateRequested} = this.props;
+    const {fields: { price, bond, availableStart, minTerm, suburb, postcode, address, title, details, propertyType, roomType, propertyFeature, files, imageCount, contactName, contactNumber, contactEmail, contactSocial, preferredContact }, handleSubmit, submitting, property, onChange, onSuggestionsUpdateRequested} = this.props;
 
     console.log(this.props);
 
@@ -258,22 +258,23 @@ export default class AddProperty extends Component {
                     <Dropzone {...files} onDrop={this.onDrop} style={DropzoneStyles}>
                       <div style={TextCenterDivStyles}>
                         Drop photos here or click to select photos to upload.
+                        {
+                          this.props.values.files ?
+                              <div>
+                                <div>
+                                  {
+                                    this.props.values.files.map((file, i) =>
+                                        <img key={`image-preview-${i}`}
+                                             src={file.preview} style={ImagePreviewStyles}
+                                        />
+                                    )
+                                  }
+                                </div>
+                              </div> : null
+                        }
                       </div>
                     </Dropzone>
-                    {
-                      this.props.fields.files.value ?
-                          <div>
-                            <div>
-                              {
-                                this.props.fields.files.value.each((file, i) =>
-                                    <img key={`image-preview-${i}`}
-                                         src={file.preview} style={ImagePreviewStyles}
-                                    />
-                                )
-                              }
-                            </div>
-                          </div> : null
-                    }
+                    
                   </div>
                 </div>
               </section>
