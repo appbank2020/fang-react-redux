@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { getSuburbSuggestions, getSuburbsFromServer, updateSuggestions, updateSuburbSuggestionValue, clearSuburbSuggestions, addProperty } from '../actions/property'
-import { reduxForm } from 'redux-form'
+import { addProperty, getSuburbsFromServer, updateSuggestions, updateSuburbSuggestionValue, clearSuburbSuggestions, changePrice, changeBond,
+        changeAvailableStart, changeMinterm, changeAddress, changeTitle, changeDetails, changePropertyType, changeRoomType, changePropertyFeature,
+        changeFiles, changeContactName, changeContactNumber, changeContactEmail, changeContactSocial }
+    from '../actions/property'
+import { reduxForm, change } from 'redux-form'
 import { browserHistory } from 'react-router'
 import AddProperty from '../components/AddProperty'
 import moment from 'moment'
@@ -39,7 +42,6 @@ function validate(values) {
 }
 
 const validateAndAddProperty = (values, dispatch) => {
-    console.log(values);
     dispatch(addProperty(values))
         .payload
         .end((err, res) => {
@@ -57,7 +59,6 @@ const mapDispatchToProps = (dispatch) => {
         onChange(event, { newValue }) {
 
             dispatch(updateSuburbSuggestionValue(newValue));
-
             const value = newValue.trim();
             if (value === '') {
                 dispatch(clearSuburbSuggestions());
@@ -71,13 +72,59 @@ const mapDispatchToProps = (dispatch) => {
                         dispatch(updateSuggestions(res.body, value));
                     }
                 });
+        },
+        onFormChange(e) {
+            const { name, value } = e.target
+            if (!name) return
+            switch(name) {
+                case 'price':
+                    return dispatch(changePrice(value));
+                case 'address':
+                    return dispatch(changeAddress(value));
+                case 'title':
+                    return dispatch(changeTitle(value));
+                case 'details':
+                    return dispatch(changeDetails(value));
+                case 'contactName':
+                    return dispatch(changeContactName(value));
+                case 'contactNumber':
+                    return dispatch(changeContactNumber(value));
+                case 'contactEmail':
+                    return dispatch(changeContactEmail(value));
+                case 'contactSocial':
+                    return dispatch(changeContactSocial(value));
+            }
+
+            //fields[name].onChange(value)
+            //... do some saving
+        },
+        onBondChange(value) {
+            dispatch(changeBond(value));
+        },
+        onAvailableStartChange(value) {
+            dispatch(changeAvailableStart(moment(value).format('YYYY-MM-DD')));
+        },
+        onMintermChange(value) {
+            dispatch(changeMinterm(value));
+        },
+        onPropertyTypeChange(value) {
+            dispatch(changePropertyType(value));
+        },
+        onRoomTypeChange(value) {
+            dispatch(changeRoomType(value));
+        },
+        onPropertyFeatureChange(value) {
+            var arr = [];
+            value.map(function(val) {
+                arr.push(val.value);
+            })
+
+            dispatch(changePropertyFeature(arr));
         }
     }
 }
 
 function mapStateToProps(state) {
-    console.log(state);
-    
     return {
         property: state.property,
         initialValues: state.property

@@ -65,9 +65,19 @@ export default class AddProperty extends Component {
   }
 
   render() {
-    const {fields: { price, bond, availableStart, minTerm, suburb, postcode, address, title, details, propertyType, roomType, propertyFeature, files, imageCount, contactName, contactNumber, contactEmail, contactSocial, preferredContact }, handleSubmit, submitting, property, onChange, onSuggestionsUpdateRequested} = this.props;
+    const {fields: { price, bond, availableStart, minTerm, suburb, postcode, address, title, details, propertyType, roomType, 
+        propertyFeature, files, imageCount, contactName, contactNumber, contactEmail, contactSocial, preferredContact }, 
+        handleSubmit, submitting, property, onChange, onSuggestionsUpdateRequested, onFormChange, onBondChange, onAvailableStartChange,
+        onMintermChange, onPropertyTypeChange, onRoomTypeChange, onPropertyFeatureChange } = this.props;
 
     console.log(this.props);
+
+    const value = property.suggestions.value.trim();
+    if (value.indexOf(',') > -1) {
+      var suburbArr = value.split(',');
+      property.suburb = suburbArr[0].trim();
+      property.postcode = suburbArr[1].trim();
+    }
 
     const theme = {
       input: 'form-control',
@@ -120,13 +130,15 @@ export default class AddProperty extends Component {
       { value: 'fastInternet', label: 'Fast Internet' }
     ]
 
+    
+
     return (
         <div>
           <Navbar pageFlag="addProperty" />
           <div className="container">
             <h2>Add Property</h2>
             {this.renderError(property)}
-            <form onSubmit={handleSubmit(this.props.addProperty.bind(this))} className="form-horizontal">
+            <form onSubmit={handleSubmit(this.props.addProperty.bind(this))} onChange={(e)=>onFormChange(e)} className="form-horizontal">
               <section className="basic">
                 <div className={`form-group ${price.touched && price.invalid ? 'has-error' : ''}`}>
                   <label className="col-sm-3 control-label">Rent per week $</label>
@@ -144,6 +156,7 @@ export default class AddProperty extends Component {
                         options={bondOptions}
                         {...bond}
                         onBlur={() => bond.onBlur(bond.value)}
+                        onChange={onBondChange}
                     />
                   </div>
                 </div>
@@ -156,6 +169,7 @@ export default class AddProperty extends Component {
                         minDate={moment()}
                         selected={availableStart.value ? moment(availableStart.value) : moment() }
                         {...availableStart}
+                        onChange={onAvailableStartChange}
                     />
                   </div>
                 </div>
@@ -168,6 +182,7 @@ export default class AddProperty extends Component {
                         options={termOptions}
                         {...minTerm}
                         onBlur={() => minTerm.onBlur(minTerm.value)}
+                        onChange={onMintermChange}
                     />
                   </div>
                 </div>
@@ -223,6 +238,7 @@ export default class AddProperty extends Component {
                         options={propertyTypeOptions}
                         {...propertyType}
                         onBlur={() => propertyType.onBlur(propertyType.value)}
+                        onChange={onPropertyTypeChange}
                     />
                     <span className="help-block">{propertyType.touched ? propertyType.error : ''}</span>
                   </div>
@@ -236,6 +252,7 @@ export default class AddProperty extends Component {
                         options={roomTypeOptions}
                         {...roomType}
                         onBlur={() => roomType.onBlur(roomType.value)}
+                        onChange={onRoomTypeChange}
                     />
                     <span className="help-block">{roomType.touched ? roomType.error : ''}</span>
                   </div>
@@ -249,6 +266,7 @@ export default class AddProperty extends Component {
                         options={propertyFeatureOptions}
                         {...propertyFeature}
                         onBlur={() => propertyFeature.onBlur(propertyFeature.value)}
+                        onChange={onPropertyFeatureChange}
                     />
                   </div>
                 </div>
@@ -274,7 +292,7 @@ export default class AddProperty extends Component {
                         }
                       </div>
                     </Dropzone>
-                    
+
                   </div>
                 </div>
               </section>
