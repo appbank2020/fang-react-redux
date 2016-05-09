@@ -120,6 +120,9 @@ const mapDispatchToProps = (dispatch) => {
             })
 
             dispatch(changePropertyFeature(arr));
+        },
+        onDropFiles(value) {
+            dispatch(changeFiles(value));
         }
     }
 }

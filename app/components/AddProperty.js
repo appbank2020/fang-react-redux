@@ -68,9 +68,9 @@ export default class AddProperty extends Component {
     const {fields: { price, bond, availableStart, minTerm, suburb, postcode, address, title, details, propertyType, roomType, 
         propertyFeature, files, imageCount, contactName, contactNumber, contactEmail, contactSocial, preferredContact }, 
         handleSubmit, submitting, property, onChange, onSuggestionsUpdateRequested, onFormChange, onBondChange, onAvailableStartChange,
-        onMintermChange, onPropertyTypeChange, onRoomTypeChange, onPropertyFeatureChange } = this.props;
+        onMintermChange, onPropertyTypeChange, onRoomTypeChange, onPropertyFeatureChange, onDropFiles } = this.props;
 
-    console.log(this.props);
+    //console.log(this.props);
 
     const value = property.suggestions.value.trim();
     if (value.indexOf(',') > -1) {
@@ -129,8 +129,6 @@ export default class AddProperty extends Component {
       { value: 'billInclude', label: 'Bill Included' },
       { value: 'fastInternet', label: 'Fast Internet' }
     ]
-
-    
 
     return (
         <div>
@@ -273,26 +271,25 @@ export default class AddProperty extends Component {
                 <div className="form-group">
                   <label className="col-sm-3 control-label">Property Images</label>
                   <div className="col-sm-9">
-                    <Dropzone {...files} onDrop={this.onDrop} style={DropzoneStyles}>
+                    <Dropzone {...files} onDrop={onDropFiles} style={DropzoneStyles}>
                       <div style={TextCenterDivStyles}>
                         Drop photos here or click to select photos to upload.
-                        {
-                          this.props.values.files ?
-                              <div>
-                                <div>
-                                  {
-                                    this.props.values.files.map((file, i) =>
-                                        <img key={`image-preview-${i}`}
-                                             src={file.preview} style={ImagePreviewStyles}
-                                        />
-                                    )
-                                  }
-                                </div>
-                              </div> : null
-                        }
                       </div>
                     </Dropzone>
-
+                    {
+                      property.files ?
+                          <div>
+                            <div>
+                              {
+                                property.files.map((file, i) =>
+                                    <img key={`image-preview-${i}`}
+                                         src={file.preview} style={ImagePreviewStyles}
+                                    />
+                                )
+                              }
+                            </div>
+                          </div> : null
+                    }
                   </div>
                 </div>
               </section>
