@@ -2,7 +2,7 @@ import request from 'superagent';
 
 import { ADD_PROPERTY, ADD_PROPERTY_SUCCESS, ADD_PROPERTY_FAILURE, GET_SUBURB_SUGGESTIONS, UPDATE_SUBURB_SUGGESTION_INPUT_VALUE, UPDATE_SUBURB_SUGGESTIONS, CLEAR_SUBURB_SUGGESTIONS,
         CHANGE_PRICE, CHANGE_BOND, CHANGE_AVAILABLESTART, CHANGE_MINTERM, CHANGE_ADDRESS, CHANGE_TITLE, CHANGE_DETAILS, CHANGE_PROPERTYTYPE, CHANGE_ROOMTYPE, CHANGE_PROPERTYFEATURE,
-        CHANGE_FILES, CHANGE_CONTACTNAME, CHANGE_CONTACTNUMBER, CHANGE_CONTACTEMAIL, CHANGE_CONTACTSOCIAL }
+        CHANGE_FILES, CHANGE_CONTACTNAME, CHANGE_CONTACTNUMBER, CHANGE_CONTACTEMAIL, CHANGE_CONTACTSOCIAL, RESET_STATE }
     from '../constants/ActionTypes'
 
 export function getSuburbsFromServer(suburb) {
@@ -168,5 +168,17 @@ export function addProperty(property) {
     return {
         type: ADD_PROPERTY,
         payload: req
+    };
+}
+
+export function addPropertSuccess() {
+    return {
+        type: ADD_PROPERTY_SUCCESS
+    };
+}
+
+export function resetForm() {
+    return {
+        type: RESET_STATE
     };
 }

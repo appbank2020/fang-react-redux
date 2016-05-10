@@ -1,6 +1,6 @@
 import { ADD_PROPERTY, ADD_PROPERTY_SUCCESS, ADD_PROPERTY_FAILURE, GET_SUBURB_SUGGESTIONS, UPDATE_SUBURB_SUGGESTION_INPUT_VALUE, UPDATE_SUBURB_SUGGESTIONS, CLEAR_SUBURB_SUGGESTIONS,
         CHANGE_PRICE, CHANGE_BOND, CHANGE_AVAILABLESTART, CHANGE_MINTERM, CHANGE_ADDRESS, CHANGE_TITLE, CHANGE_DETAILS, CHANGE_PROPERTYTYPE, CHANGE_ROOMTYPE, CHANGE_PROPERTYFEATURE,
-        CHANGE_FILES, CHANGE_CONTACTNAME, CHANGE_CONTACTNUMBER, CHANGE_CONTACTEMAIL, CHANGE_CONTACTSOCIAL }
+        CHANGE_FILES, CHANGE_CONTACTNAME, CHANGE_CONTACTNUMBER, CHANGE_CONTACTEMAIL, CHANGE_CONTACTSOCIAL, RESET_STATE }
     from '../constants/ActionTypes'
 
 const initialState = { price: '',
@@ -24,6 +24,7 @@ const initialState = { price: '',
                         contactSocial: '',
                         preferredContact: '',
                         suggestions: {suburbs: [], value: ''},
+                        loading: false,
                         error: null };
 
 export default function (state = initialState, action = {}) {
@@ -31,11 +32,11 @@ export default function (state = initialState, action = {}) {
     
     switch (action.type) {
         case ADD_PROPERTY:
-            return initialState;
+            return { ...state, loading: true };
         case ADD_PROPERTY_SUCCESS:
-            return state;
+            return { ...state, loading: false };
         case ADD_PROPERTY_FAILURE:
-            return state;
+            return { ...state, loading: false };
         case GET_SUBURB_SUGGESTIONS:
             return {...state, suburbSearch: action.value, suggestions: {suburbs: [], value: action.value}};
         case UPDATE_SUBURB_SUGGESTIONS:
@@ -81,6 +82,8 @@ export default function (state = initialState, action = {}) {
             return {...state, contactEmail: action.value };
         case CHANGE_CONTACTSOCIAL:
             return {...state, contactSocial: action.value };
+        case RESET_STATE:
+            return initialState;
         default:
             return state;
     }

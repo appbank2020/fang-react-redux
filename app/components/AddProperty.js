@@ -135,6 +135,10 @@ export default class AddProperty extends Component {
         <div>
           <Navbar pageFlag="addProperty" />
           <div className="container">
+            {
+                property.loading ? <div className="loading">Loading&#8230;</div> : ''
+            }
+            
             <h2>Add Property</h2>
             {this.renderError(property)}
             <form onSubmit={handleSubmit(this.props.addProperty.bind(this))} onChange={(e)=>onFormChange(e)} className="form-horizontal">
@@ -323,7 +327,7 @@ export default class AddProperty extends Component {
                   </div>
                 </div>
               </section>
-              <button type="submit" className="btn btn-primary pull-right"  disabled={submitting} >Submit</button>
+              <button type="submit" className="btn btn-primary pull-right" disabled={submitting} >Submit</button>
             </form>
           </div>
         </div>

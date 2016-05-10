@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { addProperty, getSuburbsFromServer, updateSuggestions, updateSuburbSuggestionValue, clearSuburbSuggestions, changePrice, changeBond,
+import { addProperty, addPropertSuccess, getSuburbsFromServer, updateSuggestions, updateSuburbSuggestionValue, clearSuburbSuggestions, changePrice, changeBond,
         changeAvailableStart, changeMinterm, changeAddress, changeTitle, changeDetails, changePropertyType, changeRoomType, changePropertyFeature,
-        changeFiles, changeContactName, changeContactNumber, changeContactEmail, changeContactSocial }
+        changeFiles, changeContactName, changeContactNumber, changeContactEmail, changeContactSocial, resetForm }
     from '../actions/property'
 import { reduxForm, change } from 'redux-form'
 import { browserHistory } from 'react-router'
@@ -49,6 +49,9 @@ const validateAndAddProperty = (values, dispatch) => {
         .payload
         .end((err, res) => {
             if (!err) {
+                dispatch(addPropertSuccess());
+                dispatch(resetForm());
+                
                 browserHistory.push({
                     pathname: `/property/${res.body.id}`
                 })
