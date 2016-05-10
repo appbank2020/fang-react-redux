@@ -65,12 +65,13 @@ export default class AddProperty extends Component {
   }
 
   render() {
-    const {fields: { price, bond, availableStart, minTerm, suburb, postcode, address, title, details, propertyType, roomType, 
+
+    const {fields: { price, bond, availableStart, minTerm, suburb, postcode, suburbSearch, address, title, details, propertyType, roomType,
         propertyFeature, files, imageCount, contactName, contactNumber, contactEmail, contactSocial, preferredContact }, 
         handleSubmit, submitting, property, onChange, onSuggestionsUpdateRequested, onFormChange, onBondChange, onAvailableStartChange,
         onMintermChange, onPropertyTypeChange, onRoomTypeChange, onPropertyFeatureChange, onDropFiles } = this.props;
 
-    //console.log(this.props);
+    console.log(this.props);
 
     const value = property.suggestions.value.trim();
     if (value.indexOf(',') > -1) {
@@ -187,7 +188,7 @@ export default class AddProperty extends Component {
               </section>
 
               <section className="address">
-                <div className={`form-group`}>
+                <div className={`form-group ${suburbSearch.touched && suburbSearch.invalid ? 'has-error' : ''}`}>
                   <label className="col-sm-3 control-label">Suburb or postcode</label>
                   <div className="col-sm-9">
                     <AutoSuggest
@@ -198,6 +199,7 @@ export default class AddProperty extends Component {
                       renderSuggestion={this.renderSuggestion}
                       inputProps={inputProps}
                       />
+                    <span className="help-block">{suburbSearch.touched ? suburbSearch.error : ''}</span>
                   </div>
                 </div>
 

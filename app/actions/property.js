@@ -6,17 +6,14 @@ import { ADD_PROPERTY, ADD_PROPERTY_SUCCESS, ADD_PROPERTY_FAILURE, GET_SUBURB_SU
     from '../constants/ActionTypes'
 
 export function getSuburbsFromServer(suburb) {
-    if (suburb.length > 2)
-    {
-        const req = request.get('/api/suburb')
-            .query({suburb})
+    const req = request.get('/api/suburb')
+        .query({suburb})
 
-        return {
-            type: GET_SUBURB_SUGGESTIONS,
-            payload: req,
-            value: suburb
-        };
-    }
+    return {
+        type: GET_SUBURB_SUGGESTIONS,
+        payload: req,
+        value: suburb
+    };
 }
 
 export function getSuburbSuggestions(value) {

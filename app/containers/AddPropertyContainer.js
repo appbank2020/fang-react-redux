@@ -29,6 +29,9 @@ function validate(values) {
     if (!values.contactName || values.contactName.trim() === '') {
         errors.contactName = 'Enter a contact name.';
     }
+    if (!values.suburbSearch || values.suburbSearch.trim() === '') {
+        errors.suburbSearch = 'Enter a suburb or postcode';
+    }
     if ((!values.contactNumber || values.contactNumber.trim() === '') &&
         (!values.contactEmail || values.contactEmail.trim() === '') &&
         (!values.contactSocial || values.contactSocial.trim() === ''))
@@ -57,7 +60,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addProperty: validateAndAddProperty,
         onChange(event, { newValue }) {
-
             dispatch(updateSuburbSuggestionValue(newValue));
             const value = newValue.trim();
             if (value === '') {
@@ -65,13 +67,18 @@ const mapDispatchToProps = (dispatch) => {
             }
         },
         onSuggestionsUpdateRequested({ value }) {
-            dispatch(getSuburbsFromServer(value))
-                .payload
-                .end((err, res) => {
-                    if (!err) {
-                        dispatch(updateSuggestions(res.body, value));
-                    }
-                });
+            var subval = '';
+            subval = value;
+            if (subval.length > 2)
+            {
+                dispatch(getSuburbsFromServer(value))
+                    .payload
+                    .end((err, res) => {
+                        if (!err) {
+                            dispatch(updateSuggestions(res.body, value));
+                        }
+                    });
+            }
         },
         onFormChange(e) {
             const { name, value } = e.target
@@ -128,6 +135,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state) {
+    console.log(state);
     return {
         property: state.property,
         initialValues: state.property
@@ -136,6 +144,6 @@ function mapStateToProps(state) {
 
 export default reduxForm({
     form: 'AddPropertyForm',
-    fields: ['price', 'bond', 'availableStart', 'minTerm', 'suburb', 'postcode', 'address', 'title', 'details', 'propertyType', 'roomType', 'propertyFeature', 'files', 'imageCount', 'contactName', 'contactNumber', 'contactEmail', 'contactSocial', 'preferredContact'],
+    fields: ['price', 'bond', 'availableStart', 'minTerm', 'suburb', 'postcode', 'suburbSearch', 'address', 'title', 'details', 'propertyType', 'roomType', 'propertyFeature', 'files', 'imageCount', 'contactName', 'contactNumber', 'contactEmail', 'contactSocial', 'preferredContact'],
     validate
 }, mapStateToProps, mapDispatchToProps)(AddProperty);

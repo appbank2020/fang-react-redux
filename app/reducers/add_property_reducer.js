@@ -9,6 +9,7 @@ const initialState = { price: '',
                         minTerm: '',
                         suburb: '',
                         postcode: '',
+                        suburbSearch: '',
                         address: '',
                         title: '',
                         details: '',
@@ -30,15 +31,15 @@ export default function (state = initialState, action = {}) {
     
     switch (action.type) {
         case ADD_PROPERTY:
-            return state;
+            return initialState;
         case ADD_PROPERTY_SUCCESS:
             return state;
         case ADD_PROPERTY_FAILURE:
             return state;
         case GET_SUBURB_SUGGESTIONS:
-            return {...state, suggestions: {suburbs: [], value: action.value}};
+            return {...state, suburbSearch: action.value, suggestions: {suburbs: [], value: action.value}};
         case UPDATE_SUBURB_SUGGESTIONS:
-            return {...state, suggestions: {suburbs: action.suggestions, value: action.value}};
+            return {...state, suburbSearch: action.value, suggestions: {suburbs: action.suggestions, value: action.value}};
         case UPDATE_SUBURB_SUGGESTION_INPUT_VALUE:
             var val = action.value;
             var suburb, postcode;
@@ -47,9 +48,9 @@ export default function (state = initialState, action = {}) {
                 suburb = suburbArr[0].trim();
                 postcode = suburbArr[1].trim();
             }
-            return {...state, suburb: suburb, postcode: postcode, suggestions: {...state.suggestions, value: action.value}};
+            return {...state, suburb: suburb, postcode: postcode, suburbSearch: val, suggestions: {...state.suggestions, value: action.value}};
         case CLEAR_SUBURB_SUGGESTIONS:
-            return {...state, suggestions: {suburbs: [], value: ''}};
+            return {...state, suburbSearch: '', suggestions: {suburbs: [], value: ''}};
         case CHANGE_PRICE:
             return {...state, price: action.value };
         case CHANGE_BOND:
