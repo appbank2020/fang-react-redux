@@ -135,7 +135,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         property: state.property,
         initialValues: state.property
