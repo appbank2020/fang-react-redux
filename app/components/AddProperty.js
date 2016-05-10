@@ -144,7 +144,7 @@ export default class AddProperty extends Component {
             <form onSubmit={handleSubmit(this.props.addProperty.bind(this))} onChange={(e)=>onFormChange(e)} className="form-horizontal">
               <section className="basic">
                 <div className={`form-group ${price.touched && price.invalid ? 'has-error' : ''}`}>
-                  <label className="col-sm-3 control-label">Rent per week $</label>
+                  <label className="col-sm-3 control-label">Rent per week $(*)</label>
                   <div className="col-sm-9">
                     <input type="number" className="form-control" autofocus {...price}/>
                     <span className="help-block">{price.touched ? price.error : ''}</span>
@@ -193,7 +193,7 @@ export default class AddProperty extends Component {
 
               <section className="address">
                 <div className={`form-group ${suburbSearch.touched && suburbSearch.invalid ? 'has-error' : ''}`}>
-                  <label className="col-sm-3 control-label">Suburb or postcode</label>
+                  <label className="col-sm-3 control-label">Suburb or postcode(*)</label>
                   <div className="col-sm-9">
                     <AutoSuggest
                       theme={theme}
@@ -208,7 +208,7 @@ export default class AddProperty extends Component {
                 </div>
 
                 <div className={`form-group ${address.touched && address.invalid ? 'has-error' : ''}`}>
-                  <label className="col-sm-3 control-label">Address</label>
+                  <label className="col-sm-3 control-label">Address(*)</label>
                   <div className="col-sm-9">
                     <input type="text" className="form-control" {...address}/>
                     <span className="help-block">{address.touched ? address.error : ''}</span>
@@ -234,7 +234,7 @@ export default class AddProperty extends Component {
                   </div>
                 </div>
                 <div className={`form-group ${propertyType.touched && propertyType.invalid ? 'has-error' : ''}`}>
-                  <label className="col-sm-3 control-label">Property Type</label>
+                  <label className="col-sm-3 control-label">Property Type(*)</label>
                   <div className="col-sm-9">
                     <Select
                         simpleValue
@@ -248,7 +248,7 @@ export default class AddProperty extends Component {
                   </div>
                 </div>
                 <div className={`form-group ${roomType.touched && roomType.invalid ? 'has-error' : ''}`}>
-                  <label className="col-sm-3 control-label">Room Type</label>
+                  <label className="col-sm-3 control-label">Room Type(*)</label>
                   <div className="col-sm-9">
                     <Select
                         simpleValue
@@ -301,26 +301,26 @@ export default class AddProperty extends Component {
               </section>
               <section className="contact">
                 <div className={`form-group ${contactName.touched && contactName.invalid ? 'has-error' : ''}`}>
-                  <label className="col-sm-3 control-label">Contact Name</label>
+                  <label className="col-sm-3 control-label">Contact Name(*)</label>
                   <div className="col-sm-9">
                     <input type="text" className="form-control" {...contactName}/>
                     <span className="help-block">{contactName.touched ? contactName.error : ''}</span>
                   </div>
                 </div>
                 <div className={`form-group ${contactNumber.touched && contactNumber.invalid ? 'has-error' : ''}`}>
-                  <label className="col-sm-3 control-label">Contact Number</label>
+                  <label className="col-sm-3 control-label">Contact Number(*)</label>
                   <div className="col-sm-9">
                     <input type="text" className="form-control" {...contactNumber}/>
                   </div>
                 </div>
                 <div className={`form-group ${contactEmail.touched && contactEmail.invalid ? 'has-error' : ''}`}>
-                  <label className="col-sm-3 control-label">Contact Email</label>
+                  <label className="col-sm-3 control-label">Contact Email(*)</label>
                   <div className="col-sm-9">
                     <input type="email" className="form-control" {...contactEmail}/>
                   </div>
                 </div>
                 <div className={`form-group ${contactSocial.touched && contactSocial.invalid ? 'has-error' : ''}`}>
-                  <label className="col-sm-3 control-label">Wechat</label>
+                  <label className="col-sm-3 control-label">Wechat(*)</label>
                   <div className="col-sm-9">
                     <input type="text" className="form-control" {...contactSocial}/>
                     <span className="help-block">{contactSocial.touched ? contactSocial.error : ''}</span>
