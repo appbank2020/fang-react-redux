@@ -914,3 +914,9 @@ form {
     transform: rotate(360deg);
   }
 }
+
+.add-property-submit {
+  @media screen and (max-width: $break-medium) {
+    width: 100%;
+  }
+}
