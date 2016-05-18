@@ -17,6 +17,7 @@ export function getSuburbsFromServer(suburb) {
 }
 
 export function getSuburbSuggestions(value) {
+
     return dispatch => {
         dispatch(updateSuggestions(getSuburbsFromServer(value), value));
     };
